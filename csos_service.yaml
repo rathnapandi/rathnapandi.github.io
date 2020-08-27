@@ -1,0 +1,162 @@
+openapi: 3.0.2
+servers:
+  - url: /v1
+info:
+  description: This is a csos service
+  version: 1.0.0
+  title: Swagger csos keyvalue service
+  termsOfService: 'https://www.axway.com/'
+  contact:
+    email: support@axway.com
+  license:
+    name: Axway
+    url: 'https://www.axway.com/'
+tags:
+  - name: csos
+    description: Everything about your csos service
+    externalDocs:
+      description: Find out more
+      url: 'https://www.axway.com/'
+paths:
+  /keyvalues:
+    post:
+      tags:
+        - csos
+      summary: Add a new entry to  keyvalue map
+      description: Add a new entry to keyvalue map
+      operationId: addEntry
+      responses:
+        '201':
+          description: Successful created the entry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/value'
+        '405':
+          description: Invalid input
+      requestBody:
+        description: Create a new entry in the csos
+        required: true
+        content:
+          application/json:
+            schema:
+               $ref: '#/components/schemas/entry'
+    get:
+      tags:
+        - csos
+      summary: list all the entries
+      description: Generic search for all the entries
+      operationId: list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/entries'
+  '/keyvalues/{id}':
+    put:
+      tags:
+        - csos
+      summary: Update an existing keyvalue map
+      description: Update an existing keyvalue map
+      operationId: updateEntry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: keyvalue map id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful updated the entry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/entry'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: No entry found
+        '405':
+          description: Validation exception
+      requestBody:
+        description: Update an existent entry in the csos
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entry'
+    get:
+      tags:
+        - csos
+      summary: Finds the entries for a specific uid
+      description: Finds the entries for a specific uid
+      operationId: searchById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: keyvalue map id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/entry'
+        '404':
+          description: Entry not found
+    delete:
+      tags:
+        - csos
+      summary: Deletes a entry from keyvalue map
+      description: Deletes a entry from keyvalue map
+      operationId: deleteEntry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: keyvalue map id
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Entry not found
+      
+components:
+  schemas:
+    value:
+      type: string
+      description: value
+      example: 958234BCDE
+    
+    entry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id
+          example: 1234-1235
+        value:
+          type: string
+          description: value
+          example: 958234BCDE
+    entries:
+      type: array
+      items:
+        properties:
+          id:
+            type: string
+            description: value
+            example: 958234BCDE
+          value:
+            type: string
+            description: value
+            example: csoscs
+     
